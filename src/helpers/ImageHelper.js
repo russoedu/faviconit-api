@@ -17,12 +17,15 @@ export class ImageHelper {
   }
 
   async createFavicons () {
-    console.log(this.data);
+    console.log(this.data)
 
     fs.mkdirSync('./favicon-tmp/' + this.data._id)
+    const original = './favicon-tmp/' + this.data._id + '/original.' + this.data.faviconFile.extension
+    fs.renameSync(this.data.faviconFile.tempFilePath, original)
+
     favicons.sizes.forEach(async size => {
       console.log(size)
-      await sharp(this.data.faviconFile.tempFilePath)
+      await sharp(original)
         .resize({ width: size })
         .toFile('./favicon-tmp/' + this.data._id + '/favicon-' + size + '.png')
     })
