@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import fs from 'fs'
 import autoBind from 'auto-bind'
 import sharp from 'sharp'
@@ -65,7 +66,7 @@ export class FaviconFile {
    * @private
    */
   _setFileName () {
-    const splitted = this.tempFilePath.split('/')
+    const splitted = this.tempFilePath.split(/[\/\\]/)
     this.name = splitted[splitted.length - 1]
   }
 

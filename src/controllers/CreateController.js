@@ -1,5 +1,6 @@
 import { FaviconItService } from '../services/index.js'
-import { FaviconFile } from '../models/FaviconFile.js'
+import { FaviconFile, UserDetails } from '../models/index.js'
+import { ImageHelper } from '../helpers/index.js'
 
 const service = new FaviconItService()
 
@@ -10,13 +11,17 @@ export class CreateController {
     const formData = req.body
     const faviconFile = new FaviconFile(req.files.faviconFile)
     await faviconFile.format()
-
     formData.faviconFile = faviconFile
-    formData.userDetails = req.headers
+
+    const userDetails = new UserDetails(req.headers)
+    formData.userDetails = userDetails
 
     service
       .add(formData)
-      .then(result => {
+      .then(async result => {
+        const image = new ImageHelper(result.data)
+        await image.createFavicons()
+
         // TODO: Create favicons!!! Get all possible formats Sharp :)
         // Save files in folders and subfolders
         // Delete tmp files

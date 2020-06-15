@@ -4,8 +4,11 @@
   "description": "JS Box Express server - https://medium.com/codebase/mern-ep02-developing-the-back-end-with-mongodb-nodejs-and-express-556a6748b550",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "debug": "nodemon --trace-warnings app.js",
+    "start": "nodemon --trace-warnings app.js",
+    "start-server": "pm2 start app.js --name faviconit",
+    "stop-server": "pm2 stop faviconit",
+    "reload-server": "pm2 reload faviconit",
+    "delete-server": "pm2 delete faviconit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -23,7 +26,9 @@
     "mongoose": "^5.9.11",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
-    "sharp": "^0.25.3"
+    "pm2": "^4.4.0",
+    "sharp": "^0.25.3",
+    "ua-parser-js": "^0.7.21"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

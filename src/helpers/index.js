@@ -1,1 +1,1 @@
-export * from './FaviconItHelper.js'
+export * from './ImageHelper.js'
