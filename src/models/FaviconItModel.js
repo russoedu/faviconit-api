@@ -29,22 +29,12 @@ export class FaviconItModel {
             message: 'invalid size'
           }
         },
-        faviconName: {
+        appName: {
           type: String,
           required: false,
           validate: {
             validator: (v) => {
-              return /^[a-zA-Z0-9\.\-\_]*$/g.test(v)
-            },
-            message: 'invalid format'
-          }
-        },
-        faviconVersion: {
-          type: String,
-          required: false,
-          validate: {
-            validator: (v) => {
-              return /^[a-zA-Z0-9\.\-\_]*$/g.test(v)
+              return /^[a-zA-Z0-9\.\-\_\ ]*$/g.test(v)
             },
             message: 'invalid format'
           }

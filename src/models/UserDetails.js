@@ -7,9 +7,10 @@ export class UserDetails {
    * Create a user details object that will be stored n the DB.
    * @param {object} header The request header object sent by the client
    */
-  constructor (header) {
+  constructor (header, language) {
     const ua = uaParser(header['user-agent'])
 
+    this.language = language
     this.languages = header['accept-language'].split(';')
     this.referer = header.referer
 
