@@ -21,9 +21,10 @@ export class CreateController {
       .then(async result => {
         const image = new ImageHelper(result.data)
         await image.createFavicons()
+        await image.createIco()
 
-        // TODO: Create favicons!!! Get all possible formats Sharp :)
-        // Save files in folders and subfolders
+        console.log('done')
+
         // Delete tmp files
         // Create social img
         // TODO: Update Mongo data - not sure if necessary

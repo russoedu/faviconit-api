@@ -1,8 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 import autoBind from 'auto-bind'
-import { Favicons } from '../../config/favicons.js'
 import sharp from 'sharp'
+import toIco from 'to-ico'
+
+import { Favicons } from '../../config/favicons.js'
 
 /**
  * Image manipulation class
@@ -15,24 +17,42 @@ export class ImageHelper {
   constructor (dbData) {
     autoBind(this)
     this.data = dbData
-    console.log(dbData);
+    // console.log(dbData);
 
     this.favicons = new Favicons(dbData.appName, dbData.faviconFolder)
   }
 
   async createFavicons () {
-    console.log(this.data)
+    // console.log(this.data)
     const newPath = path.join('./favicon-tmp/', this.data._id.toString())
     fs.mkdirSync(newPath)
     const original = path.join(newPath, 'original.' + this.data.faviconFile.extension)
     fs.renameSync(this.data.faviconFile.tempFilePath, original)
 
-    // favicons.sizes.forEach(async size => {
-    //   console.log(size)
-    //   await sharp(original)
-    //     .resize({ width: size })
-    //     .toFile('./favicon-tmp/' + this.data._id + '/favicon-' + size + '.png')
-    // })
+    const favicons = new Favicons(this.data.appName, this.data.faviconFolder)
 
+    for (const elementPlatform in favicons.icons) {
+      const icons = favicons.icons[elementPlatform]
+      for (const elementIcon in icons) {
+        const size = icons[elementIcon]
+        console.log(size)
+        await sharp(original)
+          .resize({ width: size })
+          .toFile('./favicon-tmp/' + this.data._id + '/' + elementIcon)
+      }
+    }
+  }
+
+  async createIco () {
+    const files = [
+      fs.readFileSync('./favicon-tmp/' + this.data._id + '/favicon-16x16.png'),
+      fs.readFileSync('./favicon-tmp/' + this.data._id + '/favicon-24x24.png'),
+      fs.readFileSync('./favicon-tmp/' + this.data._id + '/favicon-32x32.png'),
+      fs.readFileSync('./favicon-tmp/' + this.data._id + '/favicon-48x48.png'),
+      fs.readFileSync('./favicon-tmp/' + this.data._id + '/favicon-64x64.png')
+    ]
+    toIco(files).then(buf => {
+      fs.writeFileSync('./favicon-tmp/' + this.data._id + '/favicon.ico', buf)
+    })
   }
 }
