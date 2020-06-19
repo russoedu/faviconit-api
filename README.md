@@ -3,7 +3,7 @@
 
 # TODO
 
-- [ ] Try Flow - https://reactjs.org/docs/static-type-checking.html
+- [ ] Add BMP (need jimp) and webp (fix 'EBUSY' error) support
 - [ ] https://engineering.townscript.com/zero-downtime-ci-cd-deployment-using-docker-docker-compose-and-jenkins/
     - Move Ngnx to a separate docker
     - Create a CI/CD pipeline that holds two separate docker-compose, update one of them, run, wait for it being finished and replace the ports on Ngnx

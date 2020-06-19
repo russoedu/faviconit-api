@@ -9,6 +9,7 @@ export class CreateController {
     console.log('create')
 
     const formData = req.body
+
     const faviconFile = new FaviconFile(req.files.faviconFile)
     await faviconFile.format()
     formData.faviconFile = faviconFile
@@ -21,12 +22,11 @@ export class CreateController {
       .then(async result => {
         const image = new ImageHelper(result.data)
         await image.createFavicons()
-        await image.createIco()
 
         console.log('done')
 
-        // Delete tmp files
-        // Create social img
+        // TODO: Delete tmp files
+        // TODO: Create social img
         // TODO: Update Mongo data - not sure if necessary
         res.status(result.status).json(result.data)
       })

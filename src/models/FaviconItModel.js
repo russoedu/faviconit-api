@@ -2,6 +2,9 @@
 import mongoose from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
 
+import { Env } from '../../config/env.js'
+
+const env = new Env()
 const Schema = mongoose.Schema
 
 export class FaviconItModel {
@@ -16,7 +19,7 @@ export class FaviconItModel {
           required: true,
           validate: {
             validator: (v) => {
-              const minImageSize = Number(process.env.REACT_APP_IMAGE_MIN_IMAGE_SIZE)
+              const minImageSize = Number(env.REACT_APP_IMAGE_MIN_IMAGE_SIZE)
               const width = v.width
               const height = v.height
               if (width < minImageSize || height < minImageSize) {

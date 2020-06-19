@@ -1,8 +1,10 @@
 import mongoose from 'mongoose'
+import { Env } from './env.js'
 
 class Connection {
   constructor () {
-    const url = `${process.env.MONGO_PROTOCOL}://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_URL}`
+    const env = new Env()
+    const url = `${env.MONGO_PROTOCOL}://${env.MONGO_USERNAME}:${env.MONGO_PASSWORD}@${env.MONGO_URL}`
     const config = {
       useNewUrlParser: true,
       useFindAndModify: false,

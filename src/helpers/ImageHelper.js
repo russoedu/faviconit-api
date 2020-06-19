@@ -3,7 +3,6 @@ import path from 'path'
 import autoBind from 'auto-bind'
 import sharp from 'sharp'
 import toIco from 'to-ico'
-
 import { Favicons } from '../../config/favicons.js'
 
 /**
@@ -23,11 +22,15 @@ export class ImageHelper {
   }
 
   async createFavicons () {
-    // console.log(this.data)
+    console.log('create favicons')
+
     const newPath = path.join('./favicon-tmp/', this.data._id.toString())
-    fs.mkdirSync(newPath)
     const original = path.join(newPath, 'original.' + this.data.faviconFile.extension)
+
+    fs.mkdirSync(newPath)
     fs.renameSync(this.data.faviconFile.tempFilePath, original)
+
+    console.log(newPath, 'created')
 
     const favicons = new Favicons(this.data.appName, this.data.faviconFolder)
 
@@ -36,14 +39,20 @@ export class ImageHelper {
       for (const elementIcon in icons) {
         const size = icons[elementIcon]
         console.log(size)
-        await sharp(original)
-          .resize({ width: size })
-          .toFile('./favicon-tmp/' + this.data._id + '/' + elementIcon)
+        if (size !== 'ico') {
+          await sharp(original)
+            .resize({ width: size })
+            .toFile('./favicon-tmp/' + this.data._id + '/' + elementIcon)
+        } else {
+          this._createIco()
+        }
       }
     }
+    return true
+
   }
 
-  async createIco () {
+  async _createIco () {
     const files = [
       fs.readFileSync('./favicon-tmp/' + this.data._id + '/favicon-16x16.png'),
       fs.readFileSync('./favicon-tmp/' + this.data._id + '/favicon-24x24.png'),

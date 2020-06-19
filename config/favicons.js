@@ -37,7 +37,8 @@ export class Favicons {
         'favicon-24x24.png': 24,
         'favicon-32x32.png': 32,
         'favicon-48x48.png': 48,
-        'favicon-64x64.png': 64
+        'favicon-64x64.png': 64,
+        'favicon.ico': 'ico'
       },
       firefox: {
         'firefox_app_60x60.png': 60,

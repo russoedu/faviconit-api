@@ -4,21 +4,21 @@ import morgan from 'morgan'
 import helmet from 'helmet'
 import fs from 'fs'
 import path from 'path'
-import dotenv from 'dotenv'
 import autoBind from 'auto-bind'
 import fileUpload from 'express-fileupload'
 import cors from 'cors'
 
 import routes from './routes.js'
+import { Env } from './env.js'
 
-dotenv.config()
+const env = new Env()
 
 const server = express()
 
 class AppController {
   constructor () {
-    this.port = process.env.FAVICONIT_PORT
-    this.logPath = path.join(path.resolve(), `../logs/api-${process.env.FAVICONIT_ENVIRONMENT}-access.log`)
+    this.port = env.FAVICONIT_PORT
+    this.logPath = path.join(path.resolve(), `../logs/api-${env.FAVICONIT_ENVIRONMENT}-access.log`)
     autoBind(this)
 
     this.config()
@@ -37,7 +37,7 @@ class AppController {
     // TODO: test multiple upload limit response on Client
     server.use(fileUpload({
       limits: {
-        fileSize: 4 * 1024 * 1024,
+        fileSize: Number(env.IMAGE_MAX_MB_SIZE) * 1024 * 1024,
         files: 1
       },
       useTempFiles: true,
@@ -47,14 +47,14 @@ class AppController {
       responseOnLimit: { error: 'maxSizeExceeded' },
       abortOnLimit: true,
       tempFileDir: './favicon-tmp/',
-      debug: process.env.FAVICONIT_ENVIRONMENT === 'development'
+      debug: env.FAVICONIT_ENVIRONMENT === 'development'
     }))
   }
 
   secure () {
     server.use(helmet())
     const corsOptions = {
-      origin: process.env.FAVICONIT_CLIENT_URL,
+      origin: env.FAVICONIT_CLIENT_URL,
       optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
     }
     server.use(cors(corsOptions))
